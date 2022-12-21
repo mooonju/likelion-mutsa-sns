@@ -1,6 +1,8 @@
 package com.likelion.sns.service;
 
 import com.likelion.sns.domaion.User;
+import com.likelion.sns.exception.AppException;
+import com.likelion.sns.exception.ErrorCode;
 import com.likelion.sns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ public class UserService {
         // userName 중복 체크
         userRepository.findByUserName(userName)
                 .ifPresent(user -> {
-                    throw new RuntimeException(userName + "는 이미 있습니다");
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, userName + "는 이미 있습니다");
                 });
 
         // 저장
