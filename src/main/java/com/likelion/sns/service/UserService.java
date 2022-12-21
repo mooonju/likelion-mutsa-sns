@@ -1,6 +1,8 @@
 package com.likelion.sns.service;
 
 import com.likelion.sns.domaion.User;
+import com.likelion.sns.domaion.dto.UserJoinRequest;
+import com.likelion.sns.domaion.dto.UserJoinResponse;
 import com.likelion.sns.exception.AppException;
 import com.likelion.sns.exception.ErrorCode;
 import com.likelion.sns.repository.UserRepository;
@@ -15,22 +17,27 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
 
-    public String join(String userName, String password) {
+    public UserJoinResponse join(UserJoinRequest request) {
 
 
         // userName 중복 체크
-        userRepository.findByUserName(userName)
+        userRepository.findByUserName(request.getUserName())
                 .ifPresent(user -> {
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, userName + "이 중복됩니다");
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, request.getUserName() + "는 이미 있습니다");
                 });
 
         // 저장
-        User user = User.builder()
-                .userName(userName)
-                .password(encoder.encode(password))
-                .build();
-        userRepository.save(user);
+        User savedUser = userRepository.save(request.toEntity());
 
-        return "SUCCESS";
+        return UserJoinResponse.fromEntity(savedUser);
+    }
+
+    public String login(String userName, String password) {
+
+        // userName 없음 테스트
+        return "token";
+
+        // password 틀림 테스트
+
     }
 }
