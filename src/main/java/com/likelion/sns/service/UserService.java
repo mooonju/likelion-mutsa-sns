@@ -1,7 +1,7 @@
 package com.likelion.sns.service;
 
 import com.likelion.sns.domaion.User;
-import com.likelion.sns.repository.UserRepository;
+import com.likelion.sns.domaion.dto.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
