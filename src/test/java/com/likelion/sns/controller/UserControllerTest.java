@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +41,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("회원가입 성공")
+    @WithMockUser
     void join() throws Exception {
         String userName = "AAA";
         String password = "1234";
@@ -52,6 +55,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("회원가입 실패")
+    @WithMockUser
     void join_fail() throws Exception {
         String userName = "AAA";
         String password = "1234";
@@ -60,6 +64,7 @@ class UserControllerTest {
                 .thenThrow(new RuntimeException("해당 userId가 중복됩니다."));
 
         mockMvc.perform(post("/api/v1/users/join")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userName, password))))
                 .andDo(print())
@@ -68,6 +73,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("로그인 성공")
+    @WithMockUser
     void login_success() throws Exception {
         String userName = "AAA";
         String password = "1234";
@@ -76,6 +82,7 @@ class UserControllerTest {
                 .thenReturn("token");
 
         mockMvc.perform(post("/api/v1/users/login")
+                        .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userName, password))))
                 .andDo(print())
@@ -84,6 +91,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("로그인 실패 - userName 없음")
+    @WithMockUser
     void login_fail1() throws Exception {
         String userName = "AAA";
         String password = "1234";
@@ -92,6 +100,7 @@ class UserControllerTest {
                 .thenThrow(new AppException(ErrorCode.USERNAME_NOTFOUND, ""));
 
         mockMvc.perform(post("/api/v1/users/login")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userName, password))))
                 .andDo(print())
@@ -100,6 +109,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("로그인 실패 - password 틀림")
+    @WithMockUser
     void login_fail2() throws Exception {
         String userName = "AAA";
         String password = "1234";
@@ -108,6 +118,7 @@ class UserControllerTest {
                 .thenThrow(new AppException(ErrorCode.INVALID_PASSWORD,""));
 
         mockMvc.perform(post("/api/v1/users/login")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userName, password))))
                 .andDo(print())
