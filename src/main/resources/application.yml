@@ -19,4 +19,4 @@ spring:
     password: 1q2w3e4r
 jwt:
   token:
-    secret: "secretKey"
+    secret: hello.ff.zz.rr
