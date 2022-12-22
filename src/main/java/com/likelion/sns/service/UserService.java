@@ -34,10 +34,18 @@ public class UserService {
 
     public String login(String userName, String password) {
 
-        // userName 없음 테스트
+        // userName 없을때
+        User selectedUser = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOTFOUND, userName + "이 없습니다"));
+
+        // password 틀렸을때
+        if (!encoder.matches(selectedUser.getPassword(), password)) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드를 잘못 입력했습니다");
+        }
+
+        //
+
+
         return "token";
-
-        // password 틀림 테스트
-
     }
 }
