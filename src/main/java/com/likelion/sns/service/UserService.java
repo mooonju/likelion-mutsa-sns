@@ -26,13 +26,13 @@ public class UserService {
     private String secretKey;
     private Long expiredTimeMs = 1000 * 60 * 60L;
 
-    public UserJoinResponse join(UserJoinRequest request) {
+    public UserJoinResponse join(String userName, String password) {
 
 
         // userName 중복 체크
-        userRepository.findByUserName(request.getUserName())
+        userRepository.findByUserName(userName)
                 .ifPresent(user -> {
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, request.getUserName() + "는 이미 있습니다");
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, userName + "는 이미 있습니다");
                 });
 
         // 저장
@@ -44,8 +44,8 @@ public class UserService {
 //        User savedUser = userRepository.save(user);
 
         User user = User.builder()
-                .userName(request.getUserName())
-                .password(encoder.encode(request.getPassword()))
+                .userName(userName)
+                .password(encoder.encode(password))
                 .build();
         userRepository.save(user);
 

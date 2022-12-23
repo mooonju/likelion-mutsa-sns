@@ -21,4 +21,11 @@ public class User {
     @Column(unique = true)
     private String userName;
     private String password;
+
+    public User toEntity(String encode) {
+        return User.builder()
+                .userName(this.userName)
+                .password(this.password)
+                .build();
+    }
 }

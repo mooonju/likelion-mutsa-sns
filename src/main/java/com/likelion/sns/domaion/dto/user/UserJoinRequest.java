@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 public class UserJoinRequest {
+
+    private Long userId;
     private String userName;
     private String password;
 
-
-    public User toEntity(String encode) {
-        return User.builder()
-                .userName(this.userName)
-                .password(this.password)
-                .build();
+    public UserJoinRequest(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
     }
+
 }
