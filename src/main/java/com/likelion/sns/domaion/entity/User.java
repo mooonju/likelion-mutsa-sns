@@ -1,4 +1,4 @@
-package com.likelion.sns.domaion;
+package com.likelion.sns.domaion.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

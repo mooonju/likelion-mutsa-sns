@@ -1,6 +1,6 @@
 package com.likelion.sns.repository;
 
-import com.likelion.sns.domaion.User;
+import com.likelion.sns.domaion.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

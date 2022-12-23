@@ -1,9 +1,9 @@
 package com.likelion.sns.service;
 
-import com.likelion.sns.domaion.User;
-import com.likelion.sns.domaion.dto.UserJoinRequest;
-import com.likelion.sns.domaion.dto.UserJoinResponse;
-import com.likelion.sns.domaion.dto.UserLoginRequest;
+import com.likelion.sns.domaion.entity.User;
+import com.likelion.sns.domaion.dto.user.UserJoinRequest;
+import com.likelion.sns.domaion.dto.user.UserJoinResponse;
+import com.likelion.sns.domaion.dto.user.UserLoginRequest;
 import com.likelion.sns.exception.AppException;
 import com.likelion.sns.exception.ErrorCode;
 import com.likelion.sns.repository.UserRepository;
