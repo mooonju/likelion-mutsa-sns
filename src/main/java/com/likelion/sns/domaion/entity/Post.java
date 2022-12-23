@@ -1,7 +1,6 @@
-package com.likelion.sns.domaion;
+package com.likelion.sns.domaion.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.likelion.sns.domaion.dto.PostDto;
+import com.likelion.sns.domaion.dto.post.PostDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

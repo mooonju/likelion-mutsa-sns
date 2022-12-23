@@ -1,9 +1,9 @@
 package com.likelion.sns.service;
 
-import com.likelion.sns.domaion.Post;
-import com.likelion.sns.domaion.User;
-import com.likelion.sns.domaion.dto.PostDto;
-import com.likelion.sns.domaion.dto.PostRequest;
+import com.likelion.sns.domaion.entity.Post;
+import com.likelion.sns.domaion.entity.User;
+import com.likelion.sns.domaion.dto.post.PostDto;
+import com.likelion.sns.domaion.dto.post.PostRequest;
 import com.likelion.sns.exception.AppException;
 import com.likelion.sns.exception.ErrorCode;
 import com.likelion.sns.repository.PostRepository;

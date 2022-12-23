@@ -1,12 +1,9 @@
-package com.likelion.sns.domaion.dto;
+package com.likelion.sns.domaion.dto.post;
 
-import com.likelion.sns.domaion.Post;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

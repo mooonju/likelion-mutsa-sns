@@ -1,7 +1,7 @@
-package com.likelion.sns.domaion.dto;
+package com.likelion.sns.domaion.dto.post;
 
-import com.likelion.sns.domaion.Post;
-import com.likelion.sns.domaion.User;
+import com.likelion.sns.domaion.entity.Post;
+import com.likelion.sns.domaion.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
