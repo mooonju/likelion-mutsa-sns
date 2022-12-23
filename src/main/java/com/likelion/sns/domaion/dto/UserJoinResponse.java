@@ -12,5 +12,9 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UserJoinResponse {
     private String userName;
-    private String message;
+    private Long userId;
+
+    public static UserJoinResponse of(User user) {
+        return new UserJoinResponse(user.getUserName(), user.getId());
+    }
 }

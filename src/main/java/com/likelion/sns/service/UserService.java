@@ -49,10 +49,7 @@ public class UserService {
                 .build();
         userRepository.save(user);
 
-        return UserJoinResponse.builder()
-                .userName(request.getUserName())
-                .message("회원 가입 성공")
-                .build();
+        return UserJoinResponse.of(user);
     }
 
     public String login(UserLoginRequest request) {
@@ -69,12 +66,14 @@ public class UserService {
         }
 
         // 토큰 발행
-//        String token = JwtTokenUtil.createToken(request.getUserName(), secretKey, expiredTimeMs);
+        String token = JwtTokenUtil.createToken(selectedUser.getUserName(), secretKey, expiredTimeMs);
 //
 //        return UserLoginResponse.builder()
 //                .token(token)
 //                .build();
-        return JwtTokenUtil.createToken(selectedUser.getUserName(), secretKey, expiredTimeMs);
+
+        log.info("token: {}", token);
+        return token;
     }
 
 }

@@ -29,6 +29,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        log.info("authorization : {}", authorization);
 
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             log.error("Token이 없거나 잘못되었습니다");
@@ -45,6 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
         String userName = JwtTokenUtil.getUserName(token, secretKey);
+        log.info("userName: {}", userName);
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("USER")));
