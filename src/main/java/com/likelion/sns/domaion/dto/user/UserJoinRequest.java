@@ -6,13 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Builder
 public class UserJoinRequest {
 
-    private Long userId;
     private String userName;
     private String password;
 

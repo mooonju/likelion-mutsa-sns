@@ -52,16 +52,16 @@ public class UserService {
         return UserJoinResponse.of(user);
     }
 
-    public String login(UserLoginRequest request) {
+    public String login(String userName, String password) {
 
         // userName 없을때
-        User selectedUser = userRepository.findByUserName(request.getUserName())
-                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOTFOUND,  String.format("username %s가 존재하지 않습니다.", request.getUserName())));
+        User selectedUser = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOTFOUND,  String.format("username %s가 존재하지 않습니다.", userName)));
 
 
         // password 틀렸을때
-        log.info("selectedPw:{} \t pw:{}", selectedUser.getPassword(), request.getPassword());
-        if(!encoder.matches(request.getPassword(), selectedUser.getPassword())){
+        log.info("selectedPw:{} \t pw:{}", selectedUser.getPassword(), password);
+        if(!encoder.matches(password, selectedUser.getPassword())){
             throw new AppException(ErrorCode.INVALID_PASSWORD, String.format("username 또는 password가 틀렸습니다."));
         }
 
