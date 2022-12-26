@@ -22,7 +22,7 @@ public class PostService {
         User user = userRepository.findByUserName(userName)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOTFOUND, "userName이 존재하지 않습니다"));
 
-        Post savedPost = postRepository.save(request.toEntity(user));
+        Post savedPost = postRepository.save(Post.of(request.getTitle(), request.getBody(), user));
 
         PostDto postDto = PostDto.builder()
                 .id(savedPost.getId())

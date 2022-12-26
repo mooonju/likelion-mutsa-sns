@@ -1,7 +1,6 @@
 package com.likelion.sns.domaion.dto.post;
 
 import com.likelion.sns.domaion.entity.Post;
-import com.likelion.sns.domaion.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +18,7 @@ public class PostDto {
     private String title;
     private String body;
     private LocalDateTime createdAt;
+    private LocalDateTime lastModifiedAt;
 
     public static PostDto toPostDto(Post post) {
         return PostDto.builder()
@@ -27,6 +27,7 @@ public class PostDto {
                 .body(post.getBody())
                 .userName(post.getUser().getUserName())
                 .createdAt(post.getCreatedAt())
+                .lastModifiedAt(post.getLastModifiedAt())
                 .build();
     }
 }

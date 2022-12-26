@@ -7,7 +7,6 @@ import com.likelion.sns.domaion.dto.user.UserLoginRequest;
 import com.likelion.sns.domaion.dto.user.UserLoginResponse;
 import com.likelion.sns.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +26,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Response<UserLoginResponse>> login(@RequestBody UserLoginRequest request) {
+    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest request) {
         String token = userService.login(request.getUserName(), request.getPassword());
-        return ResponseEntity.ok().body(Response.success(new UserLoginResponse(token)));
+        return Response.success(new UserLoginResponse(token));
     }
 }
