@@ -22,7 +22,7 @@ public class PostController {
 
     // 포스트 등록
     @PostMapping("")
-    public Response<PostResponse> create(@RequestBody PostRequest request, Authentication authentication) {
+    public Response<PostResponse> writePost(@RequestBody PostRequest request, Authentication authentication) {
         String userName = authentication.getName();
         log.info("controller userName: {}", userName);
         PostDto postDto = postService.create(request, userName);
@@ -41,5 +41,12 @@ public class PostController {
     public Response<PostDto> getPost(@PathVariable Long postId) {
         PostDto postDto = postService.findById(postId);
         return Response.success(postDto);
+    }
+
+    // 포스트 수정
+    @PutMapping("/{id}")
+    public Response<PostResponse> updatePost(@PathVariable Long id, @RequestBody PostRequest postRequest, Authentication authentication) {
+        PostDto postDto = postService.update(id, authentication.getName(), postRequest);
+        return Response.success(new PostResponse("포스트 수정 완료", postDto.getId()));
     }
 }

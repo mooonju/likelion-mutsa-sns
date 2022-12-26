@@ -13,11 +13,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+
+    // 포스트 작성
     public PostDto create(PostRequest request, String userName) {
         User user = userRepository.findByUserName(userName)
                 .orElseThrow(() -> new AppException(ErrorCode.DUPLICATED_USER_NAME));
@@ -30,16 +34,37 @@ public class PostService {
         return postDto;
     }
 
+    // 포스트 리스트 조회
     public Page<PostDto> getPostList(Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
         Page<PostDto> postDtoPage = posts.map(post -> PostDto.toPostDto(post));
         return postDtoPage;
     }
 
+    // 포스트 상세 조회
     public PostDto findById(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
         PostDto postDto = PostDto.toPostDto(post);
         return postDto;
+    }
+
+    // 포스트 수정
+    public PostDto update(Long id, String userName, PostRequest postRequest) {
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+
+        if (!Objects.equals(post.getUser().getId(), user.getId())) {
+            throw new AppException(ErrorCode.INVALID_PERMISSION);
+        }
+
+        post.setTitle(postRequest.getTitle());
+        post.setBody(postRequest.getBody());
+        Post updatePost = postRepository.save(post);
+
+        return PostDto.toPostDto(updatePost);
     }
 }

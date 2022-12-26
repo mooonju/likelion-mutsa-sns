@@ -37,11 +37,6 @@ public class UserService {
 
         // 저장
         // password 암호화
-//        String encodingPassword = encoder.encode(request.getPassword());
-//        // 암호화한 password entitiy로 변경
-//        User user = request.toEntity(encodingPassword);
-//
-//        User savedUser = userRepository.save(user);
 
         User user = User.builder()
                 .userName(userName)
@@ -66,10 +61,6 @@ public class UserService {
 
         // 토큰 발행
         String token = JwtTokenUtil.createToken(selectedUser.getUserName(), secretKey, expiredTimeMs);
-//
-//        return UserLoginResponse.builder()
-//                .token(token)
-//                .build();
 
         log.info("token: {}", token);
         return token;
