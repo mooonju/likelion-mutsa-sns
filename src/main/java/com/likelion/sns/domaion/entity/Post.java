@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Getter
-public class Post {
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
@@ -24,28 +24,17 @@ public class Post {
     private String title;
     private String body;
 
-    @CreatedDate
-    private LocalDateTime createAt;
-
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public PostDto toDto() {
-        return PostDto.builder()
-                .id(this.id)
-                .user(this.user)
-                .title(this.title)
-                .body(this.body)
+    public static Post of(String title, String body, User user) {
+        Post post = Post.builder()
+                .title(title)
+                .body(body)
+                .user(user)
                 .build();
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+        return post;
     }
 
 }
