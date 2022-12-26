@@ -1,20 +1,19 @@
 package com.likelion.sns.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.likelion.sns.domaion.dto.UserJoinRequest;
-import com.likelion.sns.domaion.dto.UserLoginRequest;
+import com.likelion.sns.domaion.dto.user.UserJoinRequest;
+import com.likelion.sns.domaion.dto.user.UserJoinResponse;
+import com.likelion.sns.domaion.dto.user.UserLoginRequest;
+import com.likelion.sns.domaion.entity.User;
 import com.likelion.sns.exception.AppException;
 import com.likelion.sns.exception.ErrorCode;
 import com.likelion.sns.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,10 +23,10 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@WebMvcTest
+@WebMvcTest(UserController.class)
 class UserControllerTest {
 
     @Autowired
@@ -39,18 +38,27 @@ class UserControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
+
     @Test
     @DisplayName("회원가입 성공")
     @WithMockUser
     void join() throws Exception {
-        String userName = "AAA";
-        String password = "1234";
+        UserJoinRequest userJoinRequest = new UserJoinRequest("userName", "password");
+        User user = new User(0L, userJoinRequest.getUserName(), userJoinRequest.getPassword());
+        when(userService.join(any(), any())).thenReturn(UserJoinResponse.of(user));
+
+
         mockMvc.perform(post("/api/v1/users/join")
                         .with(csrf())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userName, password))))
-                .andDo(print())
-                .andExpect(status().isOk());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(userJoinRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultCode").value("SUCCESS"))
+                .andExpect(jsonPath("$.result").exists())
+                .andExpect(jsonPath("$.result.userId").exists())
+                .andExpect(jsonPath("$.result.userName").value("userName"))
+                .andDo(print());
+
     }
 
     @Test
@@ -60,7 +68,7 @@ class UserControllerTest {
         String userName = "AAA";
         String password = "1234";
 
-        when(userService.join(any()))
+        when(userService.join(any(), any()))
                 .thenThrow(new RuntimeException("해당 userId가 중복됩니다."));
 
         mockMvc.perform(post("/api/v1/users/join")
@@ -83,8 +91,8 @@ class UserControllerTest {
 
         mockMvc.perform(post("/api/v1/users/login")
                         .with(csrf())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userName, password))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userName, password))))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -124,4 +132,5 @@ class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
+
 }
