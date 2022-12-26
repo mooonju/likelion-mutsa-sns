@@ -28,4 +28,5 @@ public class User {
                 .password(this.password)
                 .build();
     }
+
 }

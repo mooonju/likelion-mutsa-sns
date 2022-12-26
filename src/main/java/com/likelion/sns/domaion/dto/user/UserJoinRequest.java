@@ -8,15 +8,10 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-@Builder
+@AllArgsConstructor
 public class UserJoinRequest {
 
     private String userName;
     private String password;
-
-    public UserJoinRequest(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
-    }
 
 }
