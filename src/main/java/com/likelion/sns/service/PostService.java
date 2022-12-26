@@ -67,4 +67,25 @@ public class PostService {
 
         return PostDto.toPostDto(updatePost);
     }
+
+    // 포스트 삭제
+    public PostDto delete(Long id, String userName) {
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+
+        if (!Objects.equals(post.getUser().getId(), user.getId())) {
+            throw new AppException(ErrorCode.INVALID_PERMISSION);
+        }
+
+        postRepository.delete(post);
+
+        PostDto postDto = PostDto.builder()
+                .id(post.getId())
+                .build();
+
+        return postDto;
+    }
 }
