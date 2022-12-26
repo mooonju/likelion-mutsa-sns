@@ -35,4 +35,11 @@ public class PostController {
         Page<PostDto> postDtoPage = postService.getPostList(pageable);
         return Response.success(postDtoPage);
     }
+
+    // 포스트 상세 조회
+    @GetMapping("/{postId}")
+    public Response<PostDto> getPost(@PathVariable Long postId) {
+        PostDto postDto = postService.findById(postId);
+        return Response.success(postDto);
+    }
 }

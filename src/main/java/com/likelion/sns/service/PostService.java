@@ -20,7 +20,7 @@ public class PostService {
     private final UserRepository userRepository;
     public PostDto create(PostRequest request, String userName) {
         User user = userRepository.findByUserName(userName)
-                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOTFOUND, "userName이 존재하지 않습니다"));
+                .orElseThrow(() -> new AppException(ErrorCode.DUPLICATED_USER_NAME));
 
         Post savedPost = postRepository.save(Post.of(request.getTitle(), request.getBody(), user));
 
@@ -34,5 +34,12 @@ public class PostService {
         Page<Post> posts = postRepository.findAll(pageable);
         Page<PostDto> postDtoPage = posts.map(post -> PostDto.toPostDto(post));
         return postDtoPage;
+    }
+
+    public PostDto findById(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+        PostDto postDto = PostDto.toPostDto(post);
+        return postDto;
     }
 }
