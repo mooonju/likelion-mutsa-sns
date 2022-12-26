@@ -32,7 +32,7 @@ public class UserService {
         // userName 중복 체크
         userRepository.findByUserName(userName)
                 .ifPresent(user -> {
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, userName + "는 이미 있습니다");
+                    throw new AppException(ErrorCode.DUPLICATED_USER_NAME);
                 });
 
         // 저장
@@ -56,13 +56,12 @@ public class UserService {
 
         // userName 없을때
         User selectedUser = userRepository.findByUserName(userName)
-                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOTFOUND,  String.format("username %s가 존재하지 않습니다.", userName)));
-
+                .orElseThrow(() -> new AppException(ErrorCode.DUPLICATED_USER_NAME));
 
         // password 틀렸을때
         log.info("selectedPw:{} \t pw:{}", selectedUser.getPassword(), password);
         if(!encoder.matches(password, selectedUser.getPassword())){
-            throw new AppException(ErrorCode.INVALID_PASSWORD, String.format("username 또는 password가 틀렸습니다."));
+            throw new AppException(ErrorCode.INVALID_PASSWORD);
         }
 
         // 토큰 발행

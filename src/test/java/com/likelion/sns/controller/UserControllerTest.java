@@ -105,7 +105,7 @@ class UserControllerTest {
         String password = "1234";
 
         when(userService.login(any(), any()))
-                .thenThrow(new AppException(ErrorCode.USERNAME_NOTFOUND, ""));
+                .thenThrow(new AppException(ErrorCode.USERNAME_NOT_FOUND));
 
         mockMvc.perform(post("/api/v1/users/login")
                         .with(csrf())
@@ -123,7 +123,7 @@ class UserControllerTest {
         String password = "1234";
 
         when(userService.login(any(), any()))
-                .thenThrow(new AppException(ErrorCode.INVALID_PASSWORD,""));
+                .thenThrow(new AppException(ErrorCode.INVALID_PASSWORD));
 
         mockMvc.perform(post("/api/v1/users/login")
                         .with(csrf())
