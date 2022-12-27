@@ -51,7 +51,7 @@ public class PostController {
     }
 
     // 포스트 삭제
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/{id}")
     public Response<PostResponse> deletePost(@PathVariable Long id, Authentication authentication) {
         PostDto postDto = postService.delete(id, authentication.getName());
         return Response.success(new PostResponse("포스트 삭제 완료", postDto.getId()));
