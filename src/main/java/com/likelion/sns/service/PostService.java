@@ -24,7 +24,7 @@ public class PostService {
     // 포스트 작성
     public PostDto create(PostRequest request, String userName) {
         User user = userRepository.findByUserName(userName)
-                .orElseThrow(() -> new AppException(ErrorCode.DUPLICATED_USER_NAME));
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
 
         Post savedPost = postRepository.save(Post.of(request.getTitle(), request.getBody(), user));
 
@@ -88,4 +88,6 @@ public class PostService {
 
         return postDto;
     }
+
+
 }

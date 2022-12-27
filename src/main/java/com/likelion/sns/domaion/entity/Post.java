@@ -1,11 +1,10 @@
 package com.likelion.sns.domaion.entity;
 
-import com.likelion.sns.domaion.dto.post.PostDto;
+import com.likelion.sns.domaion.dto.post.PostRequest;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,5 +33,4 @@ public class Post extends BaseEntity {
                 .build();
         return post;
     }
-
 }
