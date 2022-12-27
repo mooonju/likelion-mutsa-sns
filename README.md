@@ -46,7 +46,7 @@
 ![mutsasns_img2](/mutsasns_img2.png)
 
 ## EndPoint
-회원가입
+**회원가입**
 <span style="background-color: #f1f8ff;color:black">POST /api/v1/users/join</span>
 - Request body
 ```
@@ -64,7 +64,7 @@
 }
 ```
 
-로그인
+**로그인**
 <span style="background-color: #f1f8ff;color:black">POST /api/v1/users/login</span>
 - Request body
 ```
@@ -83,7 +83,7 @@
 }
 ```
 
-포스트 작성
+**포스트 작성**
 <span style="background-color: #f1f8ff;color:black">POST /api/v1/posts</span>
 
 - Request body
@@ -104,7 +104,7 @@
 }
 ```
 
-포스트 수정
+**포스트 수정**
 <span style="background-color: #f1f8ff;color:black">PUT /api/v1/posts/{id}</span>
 
 - Request body
@@ -125,7 +125,7 @@
 }
 ```
 
-포스트 삭제
+**포스트 삭제**
 <span style="background-color: #f1f8ff;color:black">DELETE /api/v1/posts/{id}</span>
 
 - 매개변수 postId 입력
@@ -140,7 +140,7 @@
 }
 ```
 
-포스트 리스트 조회
+**포스트 리스트 조회**
 <span style="background-color: #f1f8ff;color:black">GET /api/v1/posts</span>
 - Response body
 ```
@@ -194,7 +194,7 @@
 }
 ```
 
-포스트 상세 조회
+**포스트 상세 조회**
 <span style="background-color: #f1f8ff;color:black">GET /api/v1/posts/{postId}</span>
 - 매개변수 postId 입력
 - Response body
