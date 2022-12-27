@@ -46,5 +46,168 @@
 ![mutsasns_img2](/mutsasns_img2.png)
 
 ## EndPoint
+회원가입
+<span style="background-color: #f1f8ff;color:black">POST /api/v1/users/join</span>
+- Request body
+```
+"password" : "1234"
+"userName" : "AAA"
+```
+- Response body
+```
+{
+  "resultCode": "SUCCESS",
+  "result": {
+    "userName": "AAA",
+    "userId": 22
+  }
+}
+```
 
+로그인
+<span style="background-color: #f1f8ff;color:black">POST /api/v1/users/login</span>
+- Request body
+```
+{
+  "password": "1234",
+  "userName": "AAA"
+}
+```
+- Response body
+```
+{
+  "resultCode": "SUCCESS",
+  "result": {
+    "jwt": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyTmFtZSI6IkFBQSIsImlhdCI6MTY3MjEyMTc3OCwiZXhwIjoxNjcyMTI1Mzc4fQ.ULGJMYWR3y_uMVXnNbkqDfSdubTZzZ3v5Ef5Igs-p_o"
+  }
+}
+```
 
+포스트 작성
+<span style="background-color: #f1f8ff;color:black">POST /api/v1/posts</span>
+
+- Request body
+```
+{
+  "body": "string",
+  "title": "string"
+}
+```
+- Response body
+```
+{
+  "resultCode": "SUCCESS",
+  "result": {
+    "message": "포스트 등록 완료",
+    "postId": 54
+  }
+}
+```
+
+포스트 수정
+<span style="background-color: #f1f8ff;color:black">PUT /api/v1/posts/{id}</span>
+
+- Request body
+```
+{
+"body": "string",
+"title": "string"
+}
+```
+- Response body
+```
+{
+  "resultCode": "SUCCESS",
+  "result": {
+    "message": "포스트 수정 완료",
+    "postId": 54
+  }
+}
+```
+
+포스트 삭제
+<span style="background-color: #f1f8ff;color:black">DELETE /api/v1/posts/{id}</span>
+
+- 매개변수 postId 입력
+- Response body
+```
+{
+  "resultCode": "SUCCESS",
+  "result": {
+    "message": "포스트 삭제 완료",
+    "postId": 55
+  }
+}
+```
+
+포스트 리스트 조회
+<span style="background-color: #f1f8ff;color:black">GET /api/v1/posts</span>
+- Response body
+```
+{
+  "resultCode": "SUCCESS",
+  "result": {
+    "content": [
+      {
+        "id": 19,
+        "userName": "kyeongrok22",
+        "title": "hello-title",
+        "body": "hello-body",
+        "createdAt": "2022-12-26T08:50:08.361683",
+        "lastModifiedAt": "2022-12-26T08:50:08.361683"
+      },
+      {
+        "id": 20,
+        "userName": "kyeongrok22",
+        "title": "hello-title",
+        "body": "hello-body",
+        "createdAt": "2022-12-26T08:59:17.683221",
+        "lastModifiedAt": "2022-12-26T08:59:17.683221"
+      }
+    ],
+    "pageable": {
+      "sort": {
+        "empty": true,
+        "sorted": false,
+        "unsorted": true
+      },
+      "offset": 0,
+      "pageNumber": 0,
+      "pageSize": 20,
+      "paged": true,
+      "unpaged": false
+    },
+    "last": false,
+    "totalPages": 3,
+    "totalElements": 49,
+    "size": 20,
+    "number": 0,
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "first": true,
+    "numberOfElements": 20,
+    "empty": false
+  }
+}
+```
+
+포스트 상세 조회
+<span style="background-color: #f1f8ff;color:black">GET /api/v1/posts/{postId}</span>
+- 매개변수 postId 입력
+- Response body
+```
+{
+  "resultCode": "SUCCESS",
+  "result": {
+    "id": 20,
+    "userName": "kyeongrok22",
+    "title": "hello-title",
+    "body": "hello-body",
+    "createdAt": "2022-12-26T08:59:17.683221",
+    "lastModifiedAt": "2022-12-26T08:59:17.683221"
+  }
+}
+```
