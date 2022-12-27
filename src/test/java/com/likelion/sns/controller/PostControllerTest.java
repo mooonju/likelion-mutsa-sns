@@ -229,7 +229,7 @@ class PostControllerTest {
                 .lastModifiedAt(LocalDateTime.now())
                 .build();
 
-        when(postService.findById(any()))
+        when(postService.readById(any()))
                 .thenReturn(postDto);
 
         mockMvc.perform(get("/api/v1/posts/1")

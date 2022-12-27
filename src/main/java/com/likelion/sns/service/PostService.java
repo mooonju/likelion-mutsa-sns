@@ -42,7 +42,7 @@ public class PostService {
     }
 
     // 포스트 상세 조회
-    public PostDto findById(Long postId) {
+    public PostDto readById(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
         PostDto postDto = PostDto.toPostDto(post);
