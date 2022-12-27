@@ -49,12 +49,12 @@
 **회원가입**
 <span style="background-color: #f1f8ff;color:black">POST /api/v1/users/join</span>
 - Request body
-```
-"password" : "1234"
+```json
+"password" : "1234",
 "userName" : "AAA"
 ```
 - Response body
-```
+```json
 {
   "resultCode": "SUCCESS",
   "result": {
@@ -67,14 +67,14 @@
 **로그인**
 <span style="background-color: #f1f8ff;color:black">POST /api/v1/users/login</span>
 - Request body
-```
+```json
 {
   "password": "1234",
   "userName": "AAA"
 }
 ```
 - Response body
-```
+```json
 {
   "resultCode": "SUCCESS",
   "result": {
@@ -87,14 +87,14 @@
 <span style="background-color: #f1f8ff;color:black">POST /api/v1/posts</span>
 
 - Request body
-```
+```json
 {
   "body": "string",
   "title": "string"
 }
 ```
 - Response body
-```
+```json
 {
   "resultCode": "SUCCESS",
   "result": {
@@ -108,14 +108,14 @@
 <span style="background-color: #f1f8ff;color:black">PUT /api/v1/posts/{id}</span>
 
 - Request body
-```
+```json
 {
 "body": "string",
 "title": "string"
 }
 ```
 - Response body
-```
+```json
 {
   "resultCode": "SUCCESS",
   "result": {
@@ -130,7 +130,7 @@
 
 - 매개변수 postId 입력
 - Response body
-```
+```json
 {
   "resultCode": "SUCCESS",
   "result": {
@@ -143,7 +143,7 @@
 **포스트 리스트 조회**
 <span style="background-color: #f1f8ff;color:black">GET /api/v1/posts</span>
 - Response body
-```
+```json
 {
   "resultCode": "SUCCESS",
   "result": {
@@ -198,7 +198,7 @@
 <span style="background-color: #f1f8ff;color:black">GET /api/v1/posts/{postId}</span>
 - 매개변수 postId 입력
 - Response body
-```
+```json
 {
   "resultCode": "SUCCESS",
   "result": {
