@@ -202,7 +202,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("포스트 삭제 실패(3) - 데이터베이스 에러")
+    @DisplayName("포스트 삭제 실패(3) - 데이터 베이스 에러")
     @WithMockUser
     void delete_fail3() throws Exception {
 
