@@ -1,4 +1,4 @@
-package com.likelion.sns.domaion;
+package com.likelion.sns.domaion.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,5 @@ public class Response<T> {
     public static <T> Response<T> success(T result) {
         return new Response("SUCCESS", result);
     }
-    public static Response<Void> success() {
-        return new Response("SUCCESS", null);
-    }
+
 }

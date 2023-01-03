@@ -1,4 +1,4 @@
-package com.likelion.sns.domaion;
+package com.likelion.sns.domaion.dto.response;
 
 import com.likelion.sns.exception.ErrorCode;
 import lombok.AllArgsConstructor;
