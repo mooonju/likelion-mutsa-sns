@@ -1,7 +1,7 @@
 package com.likelion.sns.exception;
 
-import com.likelion.sns.domaion.ErrorResponse;
-import com.likelion.sns.domaion.Response;
+import com.likelion.sns.domaion.dto.response.ErrorResponse;
+import com.likelion.sns.domaion.dto.response.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

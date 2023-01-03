@@ -1,6 +1,6 @@
 package com.likelion.sns.controller;
 
-import com.likelion.sns.domaion.Response;
+import com.likelion.sns.domaion.dto.response.Response;
 import com.likelion.sns.domaion.dto.user.UserJoinRequest;
 import com.likelion.sns.domaion.dto.user.UserJoinResponse;
 import com.likelion.sns.domaion.dto.user.UserLoginRequest;
