@@ -1,9 +1,12 @@
 package com.likelion.sns.controller;
 
-import com.likelion.sns.domaion.Response;
+import com.likelion.sns.domaion.dto.comment.CommentRequest;
+import com.likelion.sns.domaion.dto.comment.CommentResponse;
+import com.likelion.sns.domaion.dto.response.Response;
 import com.likelion.sns.domaion.dto.post.PostDto;
 import com.likelion.sns.domaion.dto.post.PostRequest;
 import com.likelion.sns.domaion.dto.post.PostResponse;
+import com.likelion.sns.domaion.entity.Comment;
 import com.likelion.sns.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,4 +59,13 @@ public class PostController {
         PostDto postDto = postService.delete(id, authentication.getName());
         return Response.success(new PostResponse("포스트 삭제 완료", postDto.getId()));
     }
+
+    // 댓글 작성
+    @PostMapping("/{postsId}/comments")
+    public Response<CommentResponse> commentWrite(@PathVariable Long postsId, @RequestBody CommentRequest commentRequest, Authentication authentication) {
+        Comment commentEntity = postService.commentWrite(postsId, authentication.getName(), commentRequest.getComment());
+        CommentResponse commentResponse = CommentResponse.fromComment(commentEntity);
+        return Response.success(commentResponse);
+    }
+
 }
