@@ -1,15 +1,11 @@
 package com.likelion.sns.service;
 
-import com.likelion.sns.domaion.dto.comment.CommentDto;
-import com.likelion.sns.domaion.dto.comment.CommentResponse;
-import com.likelion.sns.domaion.entity.Comment;
 import com.likelion.sns.domaion.entity.Post;
 import com.likelion.sns.domaion.entity.User;
 import com.likelion.sns.domaion.dto.post.PostDto;
 import com.likelion.sns.domaion.dto.post.PostRequest;
 import com.likelion.sns.exception.AppException;
 import com.likelion.sns.exception.ErrorCode;
-import com.likelion.sns.repository.CommentRepository;
 import com.likelion.sns.repository.PostRepository;
 import com.likelion.sns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +20,6 @@ import java.util.Objects;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final CommentRepository commentRepository;
 
     // 포스트 작성
     public PostDto create(PostRequest request, String userName) {
@@ -94,17 +89,6 @@ public class PostService {
         return postDto;
     }
 
-    // 댓글 작성
-    public Comment commentWrite(Long postId, String userName, String comment) {
-        Post post = postRepository.findById(postId).orElseThrow(() ->
-                new AppException(ErrorCode.POST_NOT_FOUND));
-        User user = userRepository.findByUserName(userName).orElseThrow(() ->
-                new AppException(ErrorCode.USERNAME_NOT_FOUND));
-
-        Comment commentEntity = commentRepository.save(CommentDto.of(user, post, comment));
-
-        return commentEntity;
-    }
 
 
 }

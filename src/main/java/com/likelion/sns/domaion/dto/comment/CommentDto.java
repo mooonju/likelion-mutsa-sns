@@ -4,7 +4,6 @@ import com.likelion.sns.domaion.entity.Comment;
 import com.likelion.sns.domaion.entity.Post;
 import com.likelion.sns.domaion.entity.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class CommentDto {
+public class CommentDto extends Comment {
 
     private Long id;
     private String comment;
@@ -22,12 +21,11 @@ public class CommentDto {
     private LocalDateTime createdAt;
 
     public static Comment of(User user, Post post, String comment) {
-        Comment commententity = new Comment();
-        commententity.setUser(user);
-        commententity.setPost(post);
-        commententity.setComment(comment);
-        return commententity;
+        Comment commentEntity = new Comment();
+        commentEntity.setUser(user);
+        commentEntity.setPost(post);
+        commentEntity.setComment(comment);
+        return commentEntity;
     }
-
 
 }
