@@ -1,0 +1,48 @@
+package com.likelion.sns.service;
+
+import com.likelion.sns.domaion.dto.comment.CommentDto;
+import com.likelion.sns.domaion.entity.Comment;
+import com.likelion.sns.domaion.entity.Post;
+import com.likelion.sns.domaion.entity.User;
+import com.likelion.sns.exception.AppException;
+import com.likelion.sns.exception.ErrorCode;
+import com.likelion.sns.repository.CommentRepository;
+import com.likelion.sns.repository.PostRepository;
+import com.likelion.sns.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class CommentService {
+
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
+
+    // 댓글 작성
+    public Comment commentWrite(Long postId, String userName, String comment) {
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new AppException(ErrorCode.POST_NOT_FOUND));
+        User user = userRepository.findByUserName(userName).orElseThrow(() ->
+                new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        Comment commentEntity = commentRepository.save(CommentDto.of(user, post, comment));
+
+        return commentEntity;
+    }
+
+    // 댓글 조회
+    public Page<Comment> getComment(Long postId, Pageable pageable) {
+
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new AppException(ErrorCode.POST_NOT_FOUND));
+
+        return commentRepository.findCommentByPost(pageable, post);
+
+    }
+
+
+}
