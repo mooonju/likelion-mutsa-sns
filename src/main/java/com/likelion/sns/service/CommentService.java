@@ -1,6 +1,8 @@
 package com.likelion.sns.service;
 
 import com.likelion.sns.domaion.dto.comment.CommentDto;
+import com.likelion.sns.domaion.dto.comment.CommentRequest;
+import com.likelion.sns.domaion.dto.comment.CommentResponse;
 import com.likelion.sns.domaion.entity.Comment;
 import com.likelion.sns.domaion.entity.Post;
 import com.likelion.sns.domaion.entity.User;
@@ -13,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +47,31 @@ public class CommentService {
         return commentRepository.findCommentByPost(pageable, post);
 
     }
+
+    // 댓글 수정
+    public CommentResponse editComment(Long postId, Long id, String userName, CommentRequest commentRequest) {
+
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new AppException(ErrorCode.POST_NOT_FOUND));
+        User user = userRepository.findByUserName(userName).orElseThrow(() ->
+                new AppException(ErrorCode.USERNAME_NOT_FOUND));
+        Comment comment = commentRepository.findById(id).orElseThrow(() ->
+                new AppException(ErrorCode.COMMENT_NOT_FOUND));
+
+        if (!user.getId().equals(comment.getUser().getId())) {
+            throw new AppException(ErrorCode.INVALID_PERMISSION);
+        }
+
+        comment.setComment(commentRequest.getComment());
+        comment.setLastModifiedAt(LocalDateTime.now());
+
+        Comment savedComment = commentRepository.saveAndFlush(comment);
+
+        CommentResponse commentResponse = CommentResponse.fromComment(savedComment);
+
+        return commentResponse;
+    }
+
 
 
 }
