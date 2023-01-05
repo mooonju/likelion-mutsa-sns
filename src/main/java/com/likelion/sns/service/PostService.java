@@ -1,13 +1,16 @@
 package com.likelion.sns.service;
 
+import com.likelion.sns.domaion.entity.Likes;
 import com.likelion.sns.domaion.entity.Post;
 import com.likelion.sns.domaion.entity.User;
 import com.likelion.sns.domaion.dto.post.PostDto;
 import com.likelion.sns.domaion.dto.post.PostRequest;
 import com.likelion.sns.exception.AppException;
 import com.likelion.sns.exception.ErrorCode;
+import com.likelion.sns.repository.LikeRepository;
 import com.likelion.sns.repository.PostRepository;
 import com.likelion.sns.repository.UserRepository;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +23,7 @@ import java.util.Objects;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final LikeRepository likeRepository;
 
     // 포스트 작성
     public PostDto create(PostRequest request, String userName) {
@@ -88,6 +92,37 @@ public class PostService {
 
         return postDto;
     }
+
+    // 좋아요
+    public void likes(Long postId, String userName) {
+
+        User user = userRepository.findByUserName(userName).orElseThrow(() ->
+                new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new AppException(ErrorCode.POST_NOT_FOUND));
+
+        likeRepository.findByUserAndPost(user, post).ifPresent(likes -> {
+            throw new AppException(ErrorCode.DUPLICATED_LIKE);
+        });
+
+        Likes likes = Likes.builder()
+                .post(post)
+                .user(user)
+                .build();
+
+        likeRepository.save(likes);
+    }
+
+    public Integer likeCount(Long postId) {
+
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        return likeRepository.countByPost(post);
+
+    }
+
 
 
 
