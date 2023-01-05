@@ -1,5 +1,6 @@
 package com.likelion.sns.service;
 
+import com.likelion.sns.domaion.dto.comment.CommentDeleteResponse;
 import com.likelion.sns.domaion.dto.comment.CommentDto;
 import com.likelion.sns.domaion.dto.comment.CommentRequest;
 import com.likelion.sns.domaion.dto.comment.CommentResponse;
@@ -27,15 +28,16 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     // 댓글 작성
-    public Comment commentWrite(Long postId, String userName, String comment) {
+    public CommentResponse commentWrite(Long postId, String userName, String comment) {
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new AppException(ErrorCode.POST_NOT_FOUND));
         User user = userRepository.findByUserName(userName).orElseThrow(() ->
                 new AppException(ErrorCode.USERNAME_NOT_FOUND));
 
         Comment commentEntity = commentRepository.save(CommentDto.of(user, post, comment));
+        CommentResponse commentResponse = CommentResponse.fromComment(commentEntity);
 
-        return commentEntity;
+        return commentResponse;
     }
 
     // 댓글 조회
@@ -70,6 +72,25 @@ public class CommentService {
         CommentResponse commentResponse = CommentResponse.fromComment(savedComment);
 
         return commentResponse;
+    }
+
+    // 댓글 삭제
+    public CommentDeleteResponse deleteComment(Long postId, Long id, String userName) {
+
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new AppException(ErrorCode.POST_NOT_FOUND));
+        User user = userRepository.findByUserName(userName).orElseThrow(() ->
+                new AppException(ErrorCode.USERNAME_NOT_FOUND));
+        Comment comment = commentRepository.findById(id).orElseThrow(() ->
+                new AppException(ErrorCode.COMMENT_NOT_FOUND));
+
+        commentRepository.deleteById(id);
+
+        return CommentDeleteResponse.builder()
+                .message("댓글 삭제 완료")
+                .id(comment.getId())
+                .build();
+
     }
 
 

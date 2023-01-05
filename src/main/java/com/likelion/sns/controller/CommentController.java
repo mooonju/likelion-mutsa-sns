@@ -1,5 +1,6 @@
 package com.likelion.sns.controller;
 
+import com.likelion.sns.domaion.dto.comment.CommentDeleteResponse;
 import com.likelion.sns.domaion.dto.comment.CommentDto;
 import com.likelion.sns.domaion.dto.comment.CommentRequest;
 import com.likelion.sns.domaion.dto.comment.CommentResponse;
@@ -28,8 +29,8 @@ public class CommentController {
     @PostMapping("/{postsId}/comments")
     public Response<CommentResponse> commentWrite(@PathVariable Long postsId, @RequestBody CommentRequest commentRequest, Authentication authentication) {
         log.info("userName: {}", authentication.getName());
-        Comment commentEntity = commentService.commentWrite(postsId, authentication.getName(), commentRequest.getComment());
-        CommentResponse commentResponse = CommentResponse.fromComment(commentEntity);
+
+        CommentResponse commentResponse = commentService.commentWrite(postsId, authentication.getName(), commentRequest.getComment());
 
         log.info("userName: {}", commentResponse.getUserName());
         log.info("postId: {}", commentResponse.getPostId());
@@ -51,7 +52,17 @@ public class CommentController {
     public Response<CommentResponse> editComment(@PathVariable Long postId, @PathVariable Long id, @RequestBody CommentRequest commentRequest, Authentication authentication) {
 
         CommentResponse commentResponse  = commentService.editComment(postId, id, authentication.getName(), commentRequest);
+
         return Response.success(commentResponse);
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/{postId}/comments/{id}")
+    public Response<CommentDeleteResponse> deleteComment(@PathVariable Long postId, @PathVariable Long id, Authentication authentication) {
+
+        CommentDeleteResponse commentDeleteResponse = commentService.deleteComment(postId, id, authentication.getName());
+
+        return Response.success(commentDeleteResponse);
     }
 
 
