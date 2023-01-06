@@ -1,5 +1,6 @@
 package com.likelion.sns.service;
 
+import com.likelion.sns.domaion.dto.post.PostResponse;
 import com.likelion.sns.domaion.entity.Likes;
 import com.likelion.sns.domaion.entity.Post;
 import com.likelion.sns.domaion.entity.User;
@@ -114,12 +115,23 @@ public class PostService {
         likeRepository.save(likes);
     }
 
+    // 좋아요 카운트
     public Integer likeCount(Long postId) {
 
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new AppException(ErrorCode.USERNAME_NOT_FOUND));
 
         return likeRepository.countByPost(post);
+
+    }
+
+    // 마이 피드
+    public Page<PostDto> myFeed(Pageable pageable, String userName) {
+
+        User user = userRepository.findByUserName(userName).orElseThrow(() ->
+                new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        return postRepository.findAllByUser(user, pageable).map(post -> PostDto.toPostDto(post));
 
     }
 

@@ -58,4 +58,10 @@ public class PostController {
         return Response.success(new PostResponse("포스트 삭제 완료", postDto.getId()));
     }
 
+    // 마이 피드
+    @GetMapping("/my")
+    public Response<Page<PostDto>> myFeed(Pageable pageable, Authentication authentication) {
+        return Response.success(postService.myFeed(pageable, authentication.getName()));
+    }
+
 }
