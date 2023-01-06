@@ -13,7 +13,6 @@ public class LikeController {
 
     private final PostService postService;
 
-
     // 좋아요
     @PostMapping("/{postId}/likes")
     public Response<String> likes(@PathVariable Long postId, Authentication authentication) {
@@ -26,6 +25,5 @@ public class LikeController {
     public Response<Integer> likeCount(@PathVariable Long postsId) {
         return Response.success(postService.likeCount(postsId));
     }
-
 
 }
