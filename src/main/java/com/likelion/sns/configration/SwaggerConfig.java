@@ -3,8 +3,10 @@ package com.likelion.sns.configration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.SecurityReference;
@@ -20,6 +22,12 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
+                .apiInfo(new ApiInfoBuilder()
+                        .title("likelion SNS")
+                        .description("swagger를 이용한 SNS 프로젝트")
+                        .version("1.0.0")
+                        .build())
+
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
                 .select()
@@ -45,5 +53,7 @@ public class SwaggerConfig {
     private ApiKey apiKey() {
         return new ApiKey("Authorization", "Authorization", "header");
     }
+
+
 
 }
