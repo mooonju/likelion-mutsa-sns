@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -244,9 +245,36 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.result.userName").value("userName"))
                 .andExpect(jsonPath("$.result.createdAt").exists())
                 .andDo(print());
+    }
 
+    @Test
+    @DisplayName("마이피드 조회 성공")
+    @WithMockUser
+    void my_feed_success() throws Exception {
+
+        when(postService.myFeed(any(), any())).thenReturn(Page.empty());
+
+        mockMvc.perform(get("/api/v1/posts/my")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
 
     }
 
+    @Test
+    @DisplayName("마이피드 조회 실패(1) - 로그인 하지 않은 경우")
+    @WithMockUser
+    void my_feed_fail() throws Exception {
+
+        when(postService.myFeed(any(), any())).thenThrow(new AppException(ErrorCode.INVALID_PERMISSION));
+
+        mockMvc.perform(get("/api/v1/posts/my")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+
+    }
 
 }

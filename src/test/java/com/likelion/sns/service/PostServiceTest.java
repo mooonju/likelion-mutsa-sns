@@ -6,10 +6,8 @@ import com.likelion.sns.domaion.entity.Post;
 import com.likelion.sns.domaion.entity.User;
 import com.likelion.sns.exception.AppException;
 import com.likelion.sns.exception.ErrorCode;
-import com.likelion.sns.repository.PostRepository;
-import com.likelion.sns.repository.UserRepository;
+import com.likelion.sns.repository.*;
 
-import io.jsonwebtoken.lang.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -28,6 +26,7 @@ class PostServiceTest {
 
     private final UserRepository userRepository = Mockito.mock(UserRepository.class);
     private final PostRepository postRepository = Mockito.mock(PostRepository.class);
+    private final CommentRepository commentRepository = Mockito.mock(CommentRepository.class);
 
     private final Long id = 1L;
     private final String userName = "userName";
@@ -51,10 +50,12 @@ class PostServiceTest {
     private PostRequest postRequest = new PostRequest(title, body);
 
     private PostService postService;
+    private LikeRepository likeRepository;
+    private AlarmRepository alarmRepository;
 
     @BeforeEach
     void setUpTest() {
-        postService = new PostService(postRepository, userRepository);
+        postService = new PostService(postRepository, userRepository, likeRepository, alarmRepository);
     }
 
     /*          포스트 조회           */
