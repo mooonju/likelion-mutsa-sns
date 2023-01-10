@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "comment")
 public class Comment extends BaseEntity {
 

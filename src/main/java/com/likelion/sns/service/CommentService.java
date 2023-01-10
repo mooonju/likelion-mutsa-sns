@@ -38,8 +38,15 @@ public class CommentService {
         User user = userRepository.findByUserName(userName).orElseThrow(() ->
                 new AppException(ErrorCode.USERNAME_NOT_FOUND));
 
-        Comment commentEntity = commentRepository.save(CommentDto.of(user, post, comment));
-        CommentResponse commentResponse = CommentResponse.fromComment(commentEntity);
+        Comment commentEntity = Comment.builder()
+                .comment(comment)
+                .user(user)
+                .post(post)
+                .build();
+
+        Comment savedComment = commentRepository.save(commentEntity);
+
+        CommentResponse commentResponse = CommentResponse.fromComment(savedComment);
 
         alarmRepository.save(Alarm.of(post.getUser(),  AlarmType.NEW_COMMENT_ON_POST,
                 user.getId(), post.getId()));

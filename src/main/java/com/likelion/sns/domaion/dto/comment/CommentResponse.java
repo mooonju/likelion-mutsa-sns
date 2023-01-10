@@ -2,8 +2,6 @@ package com.likelion.sns.domaion.dto.comment;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.likelion.sns.domaion.entity.Comment;
-import com.likelion.sns.domaion.entity.Post;
-import com.likelion.sns.domaion.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
