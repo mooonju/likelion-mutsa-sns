@@ -70,7 +70,7 @@
 - [x] 좋아요 / 마이피드 / 알림 구현
 - [x] 댓글 작성 / 수정 / 삭제 / 조회 / 리스트 테스트 코드 작성
 - [x] 좋아요 / 마이피드 / 알림 테스트 코드 작성
-- [x] Swagger에 ApiOperation을 써서 Controller 설명 추가
+- [x] Swagger ApiOperation 적용
 
 ## EndPoint
 **회원가입**
