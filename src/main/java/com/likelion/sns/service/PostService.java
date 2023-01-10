@@ -1,6 +1,8 @@
 package com.likelion.sns.service;
 
+import com.likelion.sns.domaion.dto.alarm.AlarmType;
 import com.likelion.sns.domaion.dto.post.PostResponse;
+import com.likelion.sns.domaion.entity.Alarm;
 import com.likelion.sns.domaion.entity.Likes;
 import com.likelion.sns.domaion.entity.Post;
 import com.likelion.sns.domaion.entity.User;
@@ -8,6 +10,7 @@ import com.likelion.sns.domaion.dto.post.PostDto;
 import com.likelion.sns.domaion.dto.post.PostRequest;
 import com.likelion.sns.exception.AppException;
 import com.likelion.sns.exception.ErrorCode;
+import com.likelion.sns.repository.AlarmRepository;
 import com.likelion.sns.repository.LikeRepository;
 import com.likelion.sns.repository.PostRepository;
 import com.likelion.sns.repository.UserRepository;
@@ -25,6 +28,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final LikeRepository likeRepository;
+    private final AlarmRepository alarmRepository;
 
     // 포스트 작성
     public PostDto create(PostRequest request, String userName) {
@@ -113,6 +117,7 @@ public class PostService {
                 .build();
 
         likeRepository.save(likes);
+        alarmRepository.save(Alarm.of(post.getUser(), AlarmType.NEW_LIKE_ON_POST, user.getId(), post.getId()));
     }
 
     // 좋아요 카운트

@@ -1,14 +1,17 @@
 package com.likelion.sns.service;
 
+import com.likelion.sns.domaion.dto.alarm.AlarmType;
 import com.likelion.sns.domaion.dto.comment.CommentDeleteResponse;
 import com.likelion.sns.domaion.dto.comment.CommentDto;
 import com.likelion.sns.domaion.dto.comment.CommentRequest;
 import com.likelion.sns.domaion.dto.comment.CommentResponse;
+import com.likelion.sns.domaion.entity.Alarm;
 import com.likelion.sns.domaion.entity.Comment;
 import com.likelion.sns.domaion.entity.Post;
 import com.likelion.sns.domaion.entity.User;
 import com.likelion.sns.exception.AppException;
 import com.likelion.sns.exception.ErrorCode;
+import com.likelion.sns.repository.AlarmRepository;
 import com.likelion.sns.repository.CommentRepository;
 import com.likelion.sns.repository.PostRepository;
 import com.likelion.sns.repository.UserRepository;
@@ -26,6 +29,7 @@ public class CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final AlarmRepository alarmRepository;
 
     // 댓글 작성
     public CommentResponse commentWrite(Long postId, String userName, String comment) {
@@ -36,6 +40,10 @@ public class CommentService {
 
         Comment commentEntity = commentRepository.save(CommentDto.of(user, post, comment));
         CommentResponse commentResponse = CommentResponse.fromComment(commentEntity);
+
+        alarmRepository.save(Alarm.of(post.getUser(),  AlarmType.NEW_COMMENT_ON_POST,
+                user.getId(), post.getId()));
+
 
         return commentResponse;
     }
@@ -92,7 +100,5 @@ public class CommentService {
                 .build();
 
     }
-
-
 
 }
