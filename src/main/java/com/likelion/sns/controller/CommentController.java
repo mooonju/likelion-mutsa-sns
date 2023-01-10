@@ -7,6 +7,7 @@ import com.likelion.sns.domaion.dto.comment.CommentResponse;
 import com.likelion.sns.domaion.dto.response.Response;
 import com.likelion.sns.domaion.entity.Comment;
 import com.likelion.sns.service.CommentService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,8 +25,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-
-    // 댓글 작성
+    @ApiOperation(value = "댓글 작성")
     @PostMapping("/{postsId}/comments")
     public Response<CommentResponse> commentWrite(@PathVariable Long postsId, @RequestBody CommentRequest commentRequest, Authentication authentication) {
         log.info("userName: {}", authentication.getName());
@@ -38,7 +38,7 @@ public class CommentController {
         return Response.success(commentResponse);
     }
 
-    // 댓글 조회
+    @ApiOperation(value = "댓글 조회")
     @GetMapping("/{postId}/comments")
     public Response<Page<CommentResponse>> commentList(@PathVariable Long postId, @PageableDefault(size = 10, sort = "createdAt") Pageable pageable) {
         Page<CommentResponse> commentResponses = commentService.getComment(postId,pageable)
@@ -47,7 +47,7 @@ public class CommentController {
         return Response.success(commentResponses);
     }
 
-    // 댓글 수정
+    @ApiOperation(value = "댓글 수정")
     @PutMapping("/{postId}/comments/{id}")
     public Response<CommentResponse> editComment(@PathVariable Long postId, @PathVariable Long id, @RequestBody CommentRequest commentRequest, Authentication authentication) {
 
@@ -56,7 +56,7 @@ public class CommentController {
         return Response.success(commentResponse);
     }
 
-    // 댓글 삭제
+    @ApiOperation(value = "댓글 삭제")
     @DeleteMapping("/{postId}/comments/{id}")
     public Response<CommentDeleteResponse> deleteComment(@PathVariable Long postId, @PathVariable Long id, Authentication authentication) {
 

@@ -2,6 +2,7 @@ package com.likelion.sns.controller;
 
 import com.likelion.sns.domaion.dto.response.Response;
 import com.likelion.sns.service.PostService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +14,14 @@ public class LikeController {
 
     private final PostService postService;
 
-    // 좋아요
+    @ApiOperation(value = "좋아요 누르기")
     @PostMapping("/{postId}/likes")
     public Response<String> likes(@PathVariable Long postId, Authentication authentication) {
         postService.likes(postId, authentication.getName());
         return Response.success("좋아요를 눌렀습니다");
     }
 
-    // 좋아요 개수
+    @ApiOperation(value = "좋아요 개수")
     @GetMapping("/{postsId}/likes")
     public Response<Integer> likeCount(@PathVariable Long postsId) {
         return Response.success(postService.likeCount(postsId));

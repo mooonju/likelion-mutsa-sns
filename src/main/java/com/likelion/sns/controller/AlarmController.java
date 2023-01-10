@@ -4,6 +4,7 @@ import com.likelion.sns.domaion.dto.alarm.AlarmResponse;
 import com.likelion.sns.domaion.dto.response.Response;
 import com.likelion.sns.domaion.entity.Alarm;
 import com.likelion.sns.service.AlarmService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ public class AlarmController {
 
     private final AlarmService alarmService;
 
+    @ApiOperation(value = "알람 리스트 조회")
     @GetMapping
     public Response<Page<AlarmResponse>> alarm(Pageable pageable, Authentication authentication) {
         Page<AlarmResponse> alarmResponses = alarmService.alarm(pageable, authentication.getName());

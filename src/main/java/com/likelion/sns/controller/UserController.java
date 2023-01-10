@@ -6,6 +6,7 @@ import com.likelion.sns.domaion.dto.user.UserJoinResponse;
 import com.likelion.sns.domaion.dto.user.UserLoginRequest;
 import com.likelion.sns.domaion.dto.user.UserLoginResponse;
 import com.likelion.sns.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,12 +20,14 @@ public class UserController {
 
     private final UserService userService;
 
+    @ApiOperation(value = "회원 가입")
     @PostMapping("/join")
     public Response<UserJoinResponse> join(@RequestBody UserJoinRequest request) {
         UserJoinResponse response = userService.join(request.getUserName(), request.getPassword());
         return Response.success(response);
     }
 
+    @ApiOperation(value = "로그인")
     @PostMapping("/login")
     public Response<UserLoginResponse> login(@RequestBody UserLoginRequest request) {
         String token = userService.login(request.getUserName(), request.getPassword());
