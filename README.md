@@ -66,14 +66,21 @@
 - [x] 포스트 작성 / 수정 / 삭제 / 상세 조회 / 리스트 구현
 - [x] 회원 가입 / 로그인 테스트 코드 작성
 - [x] 포스트 작성 / 수정 / 삭제 / 상세 조회 / 리스트 테스트 코드 작성
+- [x] 댓글 작성 / 수정 / 삭제 / 조회 / 리스트 구현
+- [x] 좋아요 구현
+- [x] 마이피드 구현
+- [x] 알림 구현
+- [x] Swagger에 ApiOperation을 써서 Controller 설명 추가
 
 ## EndPoint
 **회원가입**
 <span style="background-color: #f1f8ff;color:black">POST /api/v1/users/join</span>
 - Request body
 ```json
+{
 "password" : "1234",
 "userName" : "AAA"
+}
 ```
 - Response body
 ```json
@@ -365,31 +372,43 @@ GET /posts/my
 ```json
 {
   "resultCode": "SUCCESS",
-  "result":{
-    "content":[
-			{
-			"id": 4,
-			"title": "test",
-			"body": "body",
-			"userName": "test",
-			"createdAt": "2022-12-16T16:50:37.515952"
-			}
-		],
-	"pageable":{
-			"sort":{"empty": true, "sorted": false, "unsorted": true }, "offset": 0,…},
-			"last": true,
-			"totalPages": 1,
-			"totalElements": 1,
-			"size": 20,
-			"number": 0,
-			"sort":{
-			"empty": true,
-			"sorted": false,
-			"unsorted": true
-			},
-			"numberOfElements": 1,
-	"first": true,
-	"empty": false
+  "result": {
+    "content": [
+      {
+        "id": 19,
+        "userName": "test5",
+        "title": "알람 테스트3",
+        "body": "알람 테스트 3",
+        "createdAt": "2023-01-10 00:21:14",
+        "lastModifiedAt": "2023-01-10 00:21:14"
+      }
+    ],
+    "pageable": {
+      "sort": {
+        "empty": true,
+        "sorted": false,
+        "unsorted": true
+      },
+      "offset": 0,
+      "pageNumber": 0,
+      "pageSize": 20,
+      "paged": true,
+      "unpaged": false
+    },
+    "last": true,
+    "totalPages": 1,
+    "totalElements": 3,
+    "size": 20,
+    "number": 0,
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "first": true,
+    "numberOfElements": 3,
+    "empty": false
+  }
 }
 ```
 **알람 리스트**
@@ -408,18 +427,17 @@ GET /alarms
 ```json
 {
 	"resultCode":"SUCCESS",
-  "result": {
-	"content":
-	[
-		{
+    "result": {
+	  "content": [
+        {
 	      "id": 1,
 	      "alarmType": "NEW_LIKE_ON_POST",
-        "fromUserId": 1,
-        "targetId": 1,
+          "fromUserId": 1,
+          "targetId": 1,
 	      "text": "new like!",
-	      "createdAt": "2022-12-25T14:53:28.209+00:00",
-	  }
-	]
+	      "createdAt": "2022-12-25T14:53:28.209+00:00"
+	    }
+	  ]
 	}
 }
 ```
