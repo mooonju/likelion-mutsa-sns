@@ -3,8 +3,7 @@
 - gitlab
     - https://gitlab.com/mooonju/FinalProject_JoMunJu
 - swagger
-    - http://ec2-54-180-80-117.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
-
+    - http://ec2-3-35-210-214.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
 ## 개발환경
 - 에디터 : Intellij Ultimate
 - 개발 툴 : SpringBoot 2.7.5
@@ -37,13 +36,26 @@
 
 - 로그인 한 회원은 자신이 작성한 글 목록을 볼 수 있습니다.
 
+### 댓글
+- 댓글은 회원만이 권한을 가집니다.
+- 글의 길이는 총 100자 이상을 넘을 수 없습니다.
+- 회원은 다수의 댓글을 달 수 있습니다.
+
+### 좋아요
+- 좋아요는 회원만 권한을 가집니다.
+- 좋아요 기능은 취소가 가능합니다.
+
+### 알림
+- 알림은 회원이 자신이 쓴 글에 대해 다른회원의 댓글을 올리거나 좋아요시 받는 기능입니다.
+- 알림 목록에서 자신이 쓴 글에 달린 댓글과 좋아요를 확인할 수 있습니다.
+
 
 ## 아키텍처
 
 ![mutsasns_img1](/mutsasns_img1.png)
 
 ## ERD
-![mutsasns_img2](/mutsasns_img2.png)
+![mutsasns_erd](/mutsasns_erd.png)
 
 ## 체크 리스트
 - [x] 회원가입 구현
@@ -221,3 +233,200 @@
   }
 }
 ```
+**댓글 조회**
+GET /posts/{postId}/comments[?page=0]
+- Response body
+```json
+{
+  "resultCode": "SUCCESS",
+  "result": {
+    "content": [
+      {
+        "id": 5,
+        "comment": "hello-comment",
+        "userName": "kyeongrok48",
+        "postId": 14,
+        "createdAt": "2023-01-05 00:46:59",
+        "lastModifiedAt": "2023-01-05 00:46:59"
+      }
+    ],
+    "pageable": {
+      "sort": {
+        "empty": false,
+        "sorted": true,
+        "unsorted": false
+      },
+      "offset": 0,
+      "pageNumber": 0,
+      "pageSize": 10,
+      "paged": true,
+      "unpaged": false
+    },
+    "totalPages": 1,
+    "totalElements": 1,
+    "last": true,
+    "size": 10,
+    "number": 0,
+    "sort": {
+      "empty": false,
+      "sorted": true,
+      "unsorted": false
+    },
+    "numberOfElements": 1,
+    "first": true,
+    "empty": false
+  }
+}
+```
+
+**댓글 작성**
+POST /posts/{postsId}/comments
+- Request Body
+```json
+{
+	"comment" : "comment test4"
+}
+```
+
+- Response Body
+```json
+{
+	"resultCode": "SUCCESS",
+	"result":{
+		"id": 4,
+		"comment": "comment test4",
+		"userName": "test",
+		"postId": 2,
+		"createdAt": "2022-12-20T16:15:04.270741"
+	}
+}
+```
+
+**댓글 수정**
+PUT /posts/{postId}/comments/{id}
+- Request Body
+```json
+{
+	"comment" : "modify comment"
+}
+```
+- Response Body
+```json
+{
+	"resultCode": "SUCCESS",
+	"result":{
+		"id": 4,
+		"comment": "modify comment",
+		"userName": "test",
+		"postId": 2,
+		"createdAt": "2022-12-20T16:15:04.270741",
+		"lastModifiedAt": "2022-12-23T16:15:04.270741"
+		}
+}
+```
+**댓글 삭제**
+DELETE /posts/{postsId}/comments/{id}
+
+- Response Body
+```json
+{
+	"resultCode": "SUCCESS",
+	"result":{
+		"message": "댓글 삭제 완료",
+		"id": 4
+		}
+}
+```
+
+**좋아요 누르기**
+POST /posts/{postId}/likes
+
+- like를 한번 누를 때 마다 row가 1개씩 추가되는 방식으로 구현
+- Response Body
+```json
+{
+	"resultCode":"SUCCESS",
+        "result": "좋아요를 눌렀습니다."
+}
+```
+**좋아요 개수**
+GET /posts/{postsId}/likes
+- Response Body
+```json
+{
+	"resultCode":"SUCCESS",
+        "result": 0
+}
+```
+**마이 피드 조회 기능**
+GET /posts/my
+- 로그인된 유저만의 피드목록을 필터링 하는 기능 (Pageable 사용)
+- Response Body
+```json
+{
+  "resultCode": "SUCCESS",
+  "result":{
+    "content":[
+			{
+			"id": 4,
+			"title": "test",
+			"body": "body",
+			"userName": "test",
+			"createdAt": "2022-12-16T16:50:37.515952"
+			}
+		],
+	"pageable":{
+			"sort":{"empty": true, "sorted": false, "unsorted": true }, "offset": 0,…},
+			"last": true,
+			"totalPages": 1,
+			"totalElements": 1,
+			"size": 20,
+			"number": 0,
+			"sort":{
+			"empty": true,
+			"sorted": false,
+			"unsorted": true
+			},
+			"numberOfElements": 1,
+	"first": true,
+	"empty": false
+}
+```
+**알람 리스트**
+GET /alarms
+- 최신 순으로 20개씩 표시 (Pageable 사용)
+- **알람 리스트 조회 시 응답 필드**
+  - `id` : 알람 ID
+  - `alarmType` :알람 타입 (NEW_COMMENT_ON_POST, NEW_LIKE_ON_POST)
+  - `fromUserId`: fromUserId(알림을 발생시킨 user id)
+  - `targetId` : targetId(알림이 발생된 post id)
+  - `text` : alarmType 따라 string 필드에 담아 줄 수 있도록 필드를 선언합니다.
+    - *`NEW_COMMENT_ON_POST`* 일 때는 alarmText *→* `new comment!`
+    - *`NEW_LIKE_ON_POST`* 일 때는 alarmText *→* `"new like!"`
+  - `createdAt` : 등록일시
+- Response Body
+```json
+{
+	"resultCode":"SUCCESS",
+  "result": {
+	"content":
+	[
+		{
+	      "id": 1,
+	      "alarmType": "NEW_LIKE_ON_POST",
+        "fromUserId": 1,
+        "targetId": 1,
+	      "text": "new like!",
+	      "createdAt": "2022-12-25T14:53:28.209+00:00",
+	  }
+	]
+	}
+}
+```
+
+
+
+
+
+
+
