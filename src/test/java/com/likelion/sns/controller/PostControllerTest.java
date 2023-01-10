@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -264,10 +265,10 @@ class PostControllerTest {
 
     @Test
     @DisplayName("마이피드 조회 실패(1) - 로그인 하지 않은 경우")
-    @WithMockUser
+    @WithAnonymousUser
     void my_feed_fail() throws Exception {
 
-        when(postService.myFeed(any(), any())).thenThrow(new AppException(ErrorCode.INVALID_PERMISSION));
+        when(postService.myFeed(any(), any())).thenReturn(Page.empty());
 
         mockMvc.perform(get("/api/v1/posts/my")
                         .with(csrf())

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -46,10 +47,10 @@ class AlarmControllerTest {
 
     @Test
     @DisplayName("알람 목록 조회 실패 - 로그인하지 않은 경우")
-    @WithMockUser
+    @WithAnonymousUser
     void alarm_fail() throws Exception {
 
-        when(alarmService.alarm(any(), any())).thenThrow(new AppException(ErrorCode.INVALID_PERMISSION));
+        when(alarmService.alarm(any(), any())).thenReturn(Page.empty());
 
         mockMvc.perform(get("/api/v1/alarms")
                         .with(csrf()))
